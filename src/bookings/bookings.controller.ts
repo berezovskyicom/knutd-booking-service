@@ -12,6 +12,7 @@ import {
 } from '@nestjs/common';
 // Імпортуємо наш сервіс та інтерфейс Booking.
 import { BookingsService, type Booking } from './bookings.service';
+import { CreateBookingDto } from './dto/create-booking.dto';
 
 // Декоратор @Controller('bookings') визначає базовий маршрут для цього контролера.
 @Controller('bookings')
@@ -38,7 +39,7 @@ export class BookingsController {
   // @Post() відповідає на HTTP POST запити на '/bookings'.
   // @Body() отримує дані з тіла запиту.
   @Post()
-  create(@Body() booking: Omit<Booking, 'id'>): Booking {
+  create(@Body() booking: CreateBookingDto): Booking {
     // Делегує виклик сервісу для створення нового бронювання.
     return this.bookingsService.create(booking);
   }
@@ -51,10 +52,7 @@ export class BookingsController {
    * @throws NotFoundException, якщо бронювання не знайдено.
    */
   @Put(':id')
-  update(
-    @Param('id') id: string,
-    @Body() booking: Omit<Booking, 'id'>,
-  ): Booking {
+  update(@Param('id') id: string, @Body() booking: CreateBookingDto): Booking {
     try {
       return this.bookingsService.update(+id, booking);
     } catch (error) {

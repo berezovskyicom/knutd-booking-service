@@ -2,11 +2,14 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import promBundle from 'express-prom-bundle';
-
+import { ValidationPipe } from '@nestjs/common'
 async function bootstrap() {
   const express = require('express');
   const server = express();
   const app = await NestFactory.create(AppModule, new ExpressAdapter(server));
+
+  app.useGlobalPipes(new ValidationPipe());
+
   const metricsMiddleware = promBundle({
     includeMethod: true,
     includePath: true,
