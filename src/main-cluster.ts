@@ -5,6 +5,7 @@ import promBundle from 'express-prom-bundle';
 import cluster from 'cluster';
 import * as os from 'os';
 import { ValidationPipe } from '@nestjs/common';
+import { setupSwagger } from './swagger';
 
 async function bootstrap() {
   const express = require('express');
@@ -18,6 +19,7 @@ async function bootstrap() {
   server.use(metricsMiddleware);
 
   app.useGlobalPipes(new ValidationPipe());
+  setupSwagger(app);
 
   await app.listen(3000);
 
